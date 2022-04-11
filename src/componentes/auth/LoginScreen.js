@@ -2,7 +2,9 @@ import React from "react";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { startGoogleLogin, startLoginEmailPassword } from "../../actions/auth";
+import { setError } from "../../actions/ui";
 import { useForm } from "../../hooks/useForm";
+import validator from "validator";
 
 export const LoginScreen = () => {
   const dispatch = useDispatch();
@@ -11,17 +13,32 @@ export const LoginScreen = () => {
     email: "Rodri@gmail.com",
     password: "123456",
   });
+  
+  const { email, password } = formValues;
 
   const handleLogin = (e) => {
     e.preventDefault();
-    dispatch(startLoginEmailPassword(email, password));
+    if (isFormValid()) {
+      dispatch(startLoginEmailPassword(email, password));
+    }
   };
 
-  const handleGoogleLogin = () =>{
-    dispatch(startGoogleLogin() )
-  }
+  const handleGoogleLogin = () => {
+    dispatch(startGoogleLogin());
+  };
 
-  const { email, password } = formValues;
+  const isFormValid = () => {
+    if (!validator.isEmail(email)) {
+      dispatch(setError("El email no es valido"));
+      return false;
+    } else if (password.length < 5) {
+      dispatch(setError("La contraseña debe tener al menos 6 caracteres"));
+      return false;
+    }
+
+    return true;
+  };
+
   return (
     <div>
       <h3 className="auth__title">Login</h3>
