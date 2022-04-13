@@ -2,20 +2,26 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signInWithPopup,
+  signOut,
   updateProfile,
 } from "firebase/auth";
 import { auth, provider } from "../firebase/firebase-config";
 import { types } from "../types/types";
+import { finishLoading, startLoading } from "./ui";
 
 export const startLoginEmailPassword = (email, password) => {
   return (dispatch) => {
+    dispatch(startLoading()) 
     signInWithEmailAndPassword(auth, email, password)
       .then(({ user }) => {
-        console.log(user.uid);
         dispatch(login(user.uid, user.displayName));
       })
       .catch((err) => {
         console.log(err);
+      })
+      .finally(() => {
+        dispatch(finishLoading());
+        
       });
   };
 };
@@ -47,3 +53,15 @@ export const login = (uid, displayName) => ({
     displayName,
   },
 });
+
+export const startLogOut = () => {
+  return async(dispatch) => {
+   await signOut(auth);
+
+   dispatch(logOut())
+  };
+}
+
+export const logOut = () => ({
+  type: types.logout
+})
