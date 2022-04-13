@@ -1,3 +1,5 @@
+
+
 export const types = {
   login: "[Auth] Login",
   logout: "[Auth] Logout",
@@ -7,4 +9,13 @@ export const types = {
 
   uiStartLoading: "[UI] Start Loading",
   uiFinishLoading: "[UI] Finish Loading",
+
+  notesAddNew: "[Notes] Add New",
+  notesActive: "[Notes] Active",
+  notesLoad: "[Notes] Load",
+  notesRemove: "[Notes] Remove",
+  notesUpdated: "[Notes] Updated",
+  notesFileUrl: "[Notes] Updated image url",
+  notesLogoutCleaning: "[Notes] Logout Cleaning",
 };
+
